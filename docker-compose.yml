@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+  app:
+    build: ./bin
+    container_name: 'apache_php'
+    restart: 'always'
+    ports:
+      - '80:80'
+      - '443:443'
+    links:
+      - db
+    volumes:
+      - ./apps:/var/www/html
+      - ../../websites:/var/www/websites
+
+  db:
+    image: mariadb:latest
+    restart: 'always'
+    ports:
+      - '3306:3306'
+    volumes:
+      - ./data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+      MYSQL_DATABASE: database
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    links:
+      - db
+    ports:
+      - 8890:80
+    environment:
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+      MYSQL_DATABASE: database
