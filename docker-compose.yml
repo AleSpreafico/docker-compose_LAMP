@@ -12,7 +12,6 @@ services:
       - db
     volumes:
       - ./apps:/var/www/html
-      - ../../websites:/var/www/websites
 
   db:
     image: mariadb:latest
